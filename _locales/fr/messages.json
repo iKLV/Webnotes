@@ -5,7 +5,7 @@
     },
     "parameters_saved": {
         "message": "Paramètres sauvegardés. Retournez sur ",
-        "description": "Parameters are saved"
+        "description": "Confirmation de sauvegarde des paramètres. Retour sur"
     },
     "parameters_deleted": {
         "message": "Paramètres supprimés.",
