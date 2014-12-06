@@ -1,0 +1,66 @@
+{
+    "description": {
+        "message": "Cette extension pour Chrome est un outil de note utilisant l'application Notes pour Owncloud.",
+        "description": "Description of the extension"
+    },
+    "parameters_saved": {
+        "message": "Paramètres sauvegardés. Retournez sur ",
+        "description": "Parameters are saved"
+    },
+    "parameters_deleted": {
+        "message": "Paramètres supprimés.",
+        "description": "Parameters are deleted"
+    },
+    "error": {
+        "message": "Erreur!",
+        "description": "There is an error"
+    },
+    "error_connection": {
+        "message": "Erreur de connexion! Veuillez vérifier les <a href='options.html'>paramètres</a>.",
+        "description": "There is an error of connection"
+    },
+    "welcome": {
+        "message": "Bienvenue!",
+        "description": "Welcome message"
+    },
+    "add_new_note": {
+        "message": "Ajouter une nouvelle note.",
+        "description": "Add a new note"
+    },
+    "new_note_added": {
+        "message": "Nouvelle note ajoutée.",
+        "description": "New note added"
+    },
+    "note_saved": {
+        "message": "Note sauvegardée.",
+        "description": "New note added"
+    },
+    "note_deleted": {
+        "message": "Note supprimée.",
+        "description": "New note added"
+    },
+    "title_option": {
+        "message": "Paramètres d'Ownotes:",
+        "description": "Title of the option page"
+    },
+    "label_URL": {
+        "message": "Adresse de votre serveur Owncloud:",
+        "description": "Label du champ URL"
+    },
+    "label_Login": {
+        "message": "Nom d'utilisateur:",
+        "description": "Label du champ Nom d'utilisateur"
+    },
+    "label_Password": {
+        "message": "Mot de passe:",
+        "description": "Label du champ Mot de passe"
+    },
+    "save_options": {
+        "message": "Enregistrer",
+        "description": "Bouton de sauvegarde des options"
+    },
+    "clear_options": {
+        "message": "Nettoyer",
+        "description": "Bouton de nettoyage des options"
+    }
+}

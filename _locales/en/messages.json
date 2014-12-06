@@ -1,0 +1,67 @@
+{
+    "description": {
+        "message": "This extension for Chrome is a note tool using the Notes application for Owncloud.",
+        "description": "Description of the extension"
+    },
+    "parameters_saved": {
+        "message": "Parameters saved. Go back on ",
+        "description": "Parameters are saved"
+    },
+    "parameters_deleted": {
+        "message": "Parameters deleted.",
+        "description": "Parameters are deleted"
+    },
+    "error": {
+        "message": "Error!",
+        "description": "There is an error"
+    },
+    "error_connection": {
+        "message": "Connection Error! Please check <a href='options.html'>parameters</a>.",
+        "description": "There is an error of connection"
+    },
+    "welcome": {
+        "message": "Welcome!",
+        "description": "Welcome message"
+    },
+
+    "add_new_note": {
+        "message": "Add a new note.",
+        "description": "Add a new note"
+    },
+    "new_note_added": {
+        "message": "New note added.",
+        "description": "New note added"
+    },
+    "note_saved": {
+        "message": "Note saved.",
+        "description": "Note saved"
+    },
+    "note_deleted": {
+        "message": "Note deleted.",
+        "description": "Note deleted"
+    },
+    "title_option": {
+        "message": "Ownotes parameters:",
+        "description": "Title of the option page"
+    },
+    "label_URL": {
+        "message": "Adress of your Owncloud server:",
+        "description": "Label of the input URL"
+    },
+    "label_Login": {
+        "message": "Username:",
+        "description": "Label of the input username"
+    },
+    "label_Password": {
+        "message": "Password:",
+        "description": "Label of the input password"
+    },
+    "save_options": {
+        "message": "Save",
+        "description": "Button to save the options"
+    },
+    "clear_options": {
+        "message": "Clear",
+        "description": "Button to clear the options"
+    }
+}

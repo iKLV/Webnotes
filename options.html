@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+    <title>Notes options</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="jquery.js"></script>
+    <script src="options.js"></script>
+  </head>
+  <body>
+    <div id="header">    
+    <h1 id="Title"></h1>
+    </div>
+    <form id="OptionForm">
+        <label for="URL" id="labelURL" ></label>
+        <br><br>
+        <input type="url" name="URL" id="URL" size="30" autofocus required />
+        <br><br>
+        <label for="Login" id="labelLogin" ></label>
+        <br><br>
+        <input type="text" name="Login" id="Login" size="30" required />
+        <br><br>
+        <label for="Password" id="labelPassword" ></label>
+        <br><br>
+        <input type="password" name="Password" size="30" id="Password" required />
+        <br><br>
+        <input type="submit" id="Save"/>
+        <input type="button" id="Clear"/>
+        <br>
+        <br>
+        <div id="OptionMessage"></div>
+    </form>
+  </body>
+</html>
+

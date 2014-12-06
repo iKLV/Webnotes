@@ -1,0 +1,83 @@
+body {
+    margin:0;
+    padding:60px 0 0 0;
+    width:300px;
+}
+
+div.Note {
+    display: inline-block;
+    margin: 5px 0 0 0;
+    padding: 10px;
+    width: 280px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+div.Note:first-line {
+    font-size:18px;
+    font-weight:bold;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    width: 280px;
+    padding:10px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
+}
+
+#NewNote {
+    cursor: pointer;
+    font-size:60px;
+    font-weight:bold;
+    opacity:0.4;
+}
+
+#NewNote:hover {
+    opacity:1;
+}
+
+#Message {
+    vertical-align:30%;
+    padding-left:10px;
+    display: none;
+    font-weight: bold;
+    font-size: 18px;
+	line-height:18px;
+}
+
+#Loading {
+    position:absolute;
+    top:10px;
+    right:10px;
+    display: none;
+	opacity:0.4;
+}
+
+#Title {
+	line-height:10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#OptionForm {
+    width: 280px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
+    font-size: 15px;
+    padding:10px;
+}
+
+#OptionMessage {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+a {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
