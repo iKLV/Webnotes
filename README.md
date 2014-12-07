@@ -29,7 +29,6 @@ You will be asked to provide the adresse of your Owncloud server, username and p
 TODO
 -------
 
-- Storing credentials seems not secured at all. I'm investigating about a solution with cookies.
 - When there is no connection, Notes are unavailables. They should be stored locally.
 - Order is not defined at all yet.
 - Minimizing.
