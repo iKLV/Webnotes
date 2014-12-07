@@ -3,13 +3,17 @@
         "message": "This extension for Chrome is a note tool using the Notes application for Owncloud.",
         "description": "Description of the extension"
     },
-    "parameters_saved": {
-        "message": "Parameters saved. Go back on ",
-        "description": "Parameters are saved"
+    "connection_success": {
+        "message": "The connection was established. Go back on ",
+        "description": "Connection working correctly"
     },
-    "parameters_deleted": {
-        "message": "Parameters deleted.",
-        "description": "Parameters are deleted"
+    "connection_failed": {
+        "message": "The connection failed. Please check your Owncloud server adress and credentials.",
+        "description": "Connection failed"
+    },
+    "clear_parameters": {
+        "message": "Parameters have been cleared.",
+        "description": "Clear of parameters"
     },
     "error": {
         "message": "Error!",

@@ -1,15 +1,19 @@
 {
     "description": {
         "message": "Cette extension pour Chrome est un outil de note utilisant l'application Notes pour Owncloud.",
-        "description": "Description of the extension"
+        "description": "Description de l'extension"
     },
-    "parameters_saved": {
-        "message": "Paramètres sauvegardés. Retournez sur ",
-        "description": "Confirmation de sauvegarde des paramètres. Retour sur"
+    "connection_success": {
+        "message": "La connexion a été établie. Retournez sur ",
+        "description": "Connexion établie. Retour sur"
     },
-    "parameters_deleted": {
-        "message": "Paramètres supprimés.",
-        "description": "Parameters are deleted"
+    "connection_fail": {
+        "message": "La connexion a échouée. Veuillez vérifier l'adresse de votre serveur Owncloud et vos identifiants.",
+        "description": "Connexion échouée"
+    },
+    "clear_parameters": {
+        "message": "Les paramètres ont été effacés.",
+        "description": "Nettoyage des paramètres"
     },
     "error": {
         "message": "Erreur!",

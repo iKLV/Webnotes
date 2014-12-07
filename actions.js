@@ -1,11 +1,10 @@
-var login = localStorage['Login'];
-var password = localStorage['Password'];
 var URL = localStorage['URL'];
 
 function printMessage(message) {
     $("#Message").html(chrome.i18n.getMessage(message));
     $("#Loading").fadeOut('slow');
-    $("#Message").fadeIn('fast').delay(1000).fadeOut('slow');
+    $("#Message").fadeIn('fast')
+    if (message != 'error_connection') $("#Message").delay(1000).fadeOut('slow');
 };
 
 function create1Note(id, content) {
@@ -37,25 +36,25 @@ function create1Note(id, content) {
 var Notes = {
     requestNotes: function() {
         $.ajax({
- 	    type: 'GET',
- 	    url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes",
- 	    contentType: 'application/json',
- 	    xhrFields: {
- 	        widthCredentials: true
- 	    },
- 	    success: function (notes) {
-            for (var n in notes) create1Note(notes[n]['id'],notes[n]['content']);
-            printMessage("welcome");
- 	    },
- 	    error: function () {
-            $("#NewNote").hide();
-            printMessage("error_connection");
- 	    },
-		timeout: 3000,
- 	    beforeSend: function (xhr) {
- 	        var auth = btoa(login + ':' + password);
- 	        xhr.setRequestHeader('Authorization', 'Basic ' + auth);
- 	    }
+            type: 'GET',
+            url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes",
+            contentType: 'application/json',
+            xhrFields: {
+                widthCredentials: true
+            },
+            success: function (notes) {
+                for (var n in notes) create1Note(notes[n]['id'],notes[n]['content']);
+                printMessage("welcome");
+            },
+            error: function () {
+                $("#NewNote").hide();
+                printMessage("error_connection");
+            },
+            timeout: 3000,
+            /*beforeSend: function (xhr) {
+                var auth = btoa(login + ':' + password);
+                xhr.setRequestHeader('Authorization', 'Basic ' + auth);
+            }*/
         });
     },
 	save1Note: function(note, content) {
@@ -72,10 +71,10 @@ var Notes = {
             error: function () {
                 printMessage("error");
             },
-            beforeSend: function (xhr) {
+            /*beforeSend: function (xhr) {
                 var auth = btoa(login + ':' + password);
                 xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }
+            }*/
         });
 	},
     add1Note: function(note) {
@@ -94,10 +93,10 @@ var Notes = {
                 note.slideUp();
                 printMessage("error");
             },
-            beforeSend: function (xhr) {
+            /*beforeSend: function (xhr) {
                 var auth = btoa(login + ':' + password);
                 xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }
+            }*/
         });
     },
     delete1Note: function(note) {
@@ -115,19 +114,17 @@ var Notes = {
                 $(note).slideDown();
                 printMessage("error");
             },
-            beforeSend: function (xhr) {
+            /*beforeSend: function (xhr) {
                 var auth = btoa(login + ':' + password);
                 xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }
+            }*/
         });
     },
 };
 
 document.addEventListener('DOMContentLoaded', function () {
     // Check parameters
-    if (!URL || !login || !password) {
-        window.location.replace("options.html");
-    }
+    if (!URL) window.location.replace("options.html");
 
     // Request the current notes
     Notes.requestNotes();
@@ -147,4 +144,13 @@ document.addEventListener('DOMContentLoaded', function () {
         note.focus();
         Notes.add1Note(note);
     });
+    /*$('body').bind('keypress', function(e) {
+        if (e.ctrlKey && e.which == 78) {
+            console.log('t');
+            e.preventDefault();
+            var note = create1Note(null,'');
+            note.focus();
+            Notes.add1Note(note);
+        }
+    });*/
 });
