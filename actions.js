@@ -12,21 +12,38 @@ function create1Note(id, content) {
     note.className = 'Note';
     note.style.display = 'none';
     note.contentEditable = true;
+    note.changed = false;
     if (id) note.id = id;
     content = content.split('\n');
     for (var c=0; c < content.length; c++) $(note).append(content[c]+'<br>');
+    // blur event to send a save or delete
     $(note).blur(function() {
-        $("#Loading").fadeIn("fast");
-        var cont = this.innerHTML.split('<br>');
+        var cont = this.innerHTML.replace(/<br>/g,"\n");
         for (var i=cont.length-1; i>0; i--) {
-            if (cont[i] == '') cont.splice(i,1);
-            else break;
+            if (cont[i] != '\n') {
+                cont = cont.slice(0, i+1);
+                break;
+            }
         }
-        cont = cont.join('\n')
-        if (cont == "") {
+        if (cont == "" || cont == "\n") {
+            $("#Loading").fadeIn("fast");
             $(this).slideUp();
             Notes.delete1Note(this);
-        } else Notes.save1Note(this,cont);
+        } else if (note.changed) {
+            $("#Loading").fadeIn("fast");
+            Notes.save1Note(this,cont);
+        }
+    });
+    // detects the changes
+    $(note).keypress(function() {
+        note.changed = true;
+    });
+    // shit + s
+    $(note).keypress(function(e) {
+        if (e.shiftKey && e.which == 83) {
+            e.preventDefault();
+            $(this).blur();
+        }
     });
     $('body').append(note);
     $(note).slideDown();
@@ -51,10 +68,6 @@ var Notes = {
                 printMessage("error_connection");
             },
             timeout: 3000,
-            /*beforeSend: function (xhr) {
-                var auth = btoa(login + ':' + password);
-                xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }*/
         });
     },
 	save1Note: function(note, content) {
@@ -66,15 +79,12 @@ var Notes = {
                 widthCredentials: true
             },
             success: function () {
+                note.changed = false;
                 printMessage("note_saved");
             },
             error: function () {
                 printMessage("error");
             },
-            /*beforeSend: function (xhr) {
-                var auth = btoa(login + ':' + password);
-                xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }*/
         });
 	},
     add1Note: function(note) {
@@ -93,10 +103,6 @@ var Notes = {
                 note.slideUp();
                 printMessage("error");
             },
-            /*beforeSend: function (xhr) {
-                var auth = btoa(login + ':' + password);
-                xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }*/
         });
     },
     delete1Note: function(note) {
@@ -114,10 +120,6 @@ var Notes = {
                 $(note).slideDown();
                 printMessage("error");
             },
-            /*beforeSend: function (xhr) {
-                var auth = btoa(login + ':' + password);
-                xhr.setRequestHeader('Authorization', 'Basic ' + auth);
-            }*/
         });
     },
 };
@@ -144,13 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
         note.focus();
         Notes.add1Note(note);
     });
-    /*$('body').bind('keypress', function(e) {
-        if (e.ctrlKey && e.which == 78) {
-            console.log('t');
+    $('body').keypress(function(e) {
+        if (e.shiftKey && e.which == 78) {
             e.preventDefault();
-            var note = create1Note(null,'');
-            note.focus();
-            Notes.add1Note(note);
+            $("#NewNote").click();
         }
-    });*/
+    });
 });

@@ -66,5 +66,9 @@
     "clear_options": {
         "message": "Nettoyer",
         "description": "Bouton de nettoyage des options"
+    },
+    "hint": {
+        "message": "Astuce: Vous pouvez utiliser shift + n pour ajouter une nouvelle note et shit + s (ou cliquer ailleurs sur l'extension) pour sauvegarder une note. Supprimez une note en effaçant toute la note et sauvegardant.",
+        "description": "Hint message to tell how to use Ownotes"
     }
 }

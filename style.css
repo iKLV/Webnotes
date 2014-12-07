@@ -4,7 +4,7 @@ body {
     width:300px;
 }
 
-div.Note {
+.Note {
     display: inline-block;
     margin: 5px 0 0 0;
     padding: 10px;
@@ -13,7 +13,7 @@ div.Note {
     box-shadow:0 4px 10px rgba(0,0,0,.2);
 }
 
-div.Note:first-line {
+.Note:first-line {
     font-size:18px;
     font-weight:bold;
 }

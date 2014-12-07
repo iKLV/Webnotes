@@ -67,5 +67,9 @@
     "clear_options": {
         "message": "Clear",
         "description": "Button to clear the options"
+    },
+    "hint": {
+        "message": "Hint: You can use shift + n to add a new note and shift + s (or click somewhere else on the extension) to save a note. Delete the content of a note by deleting everything inside a note and saving it.",
+        "description": "Hint message to tell how to use Ownotes"
     }
 }
