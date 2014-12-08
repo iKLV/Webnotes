@@ -1,6 +1,6 @@
 body {
     margin:0;
-    padding:60px 0 0 0;
+    padding:55px 0 0 0;
     width:300px;
 }
 
@@ -72,6 +72,10 @@ body {
 #OptionMessage {
     font-weight: bold;
     font-size: 18px;
+}
+
+#Hiint {
+    height: 50px;
 }
 
 a {
