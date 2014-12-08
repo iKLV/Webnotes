@@ -10,43 +10,63 @@ function printMessage(message) {
 function create1Note(id, content) {
     var note = document.createElement('div');
     note.className = 'Note';
-    note.style.display = 'none';
     note.contentEditable = true;
     note.changed = false;
     if (id) note.id = id;
     content = content.split('\n');
     for (var c=0; c < content.length; c++) $(note).append(content[c]+'<br>');
+    note.save = document.createElement('img');
+    note.save.src = "images/saved.png";
+    note.save.className = "saved";
+    note.save.contentEditable = false;
     // blur event to send a save or delete
     $(note).blur(function() {
-        var cont = this.innerHTML.replace(/<br>/g,"\n");
-        for (var i=cont.length-1; i>0; i--) {
-            if (cont[i] != '\n') {
-                cont = cont.slice(0, i+1);
-                break;
-            }
+        var cont = this.innerHTML.split('<br>');
+        var len = cont.length;
+        for (var i=1; i<=len; i++) {
+            if (cont[len-i] != '') break;
+            cont.splice(-1, 1);
         }
-        if (cont == "" || cont == "\n") {
+        this.innerHTML = cont.join('<br>');
+        cont = cont.join('\n');
+        if (cont == "") {
             $("#Loading").fadeIn("fast");
-            $(this).slideUp();
+            $(this).slideUp('slow');
+            $(this.save).slideUp('slow');
             Notes.delete1Note(this);
         } else if (note.changed) {
-            $("#Loading").fadeIn("fast");
+            //$("#Loading").fadeIn("fast");
+            note.save.src = "images/loader.gif";
             Notes.save1Note(this,cont);
         }
     });
-    // detects the changes
-    $(note).keypress(function() {
-        note.changed = true;
-    });
-    // shit + s
-    $(note).keypress(function(e) {
+    //Detects the changes and shit + s
+    $(note).keydown(function(e) {
+        var keyList = [9, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 91, 92, 144, 145];
+        if (keyList.indexOf(e.which) == -1) {
+            note.save.src = "images/unsaved.png";
+            note.save.className = "unsaved";
+            note.changed = true;
+        }
         if (e.shiftKey && e.which == 83) {
             e.preventDefault();
             $(this).blur();
         }
+
     });
-    $('body').append(note);
-    $(note).slideDown();
+    // click on the picture
+    $(note.save).click(function() {
+        if (note.changed) $(note).blur();
+    });
+    $(note.save).hover(function() {
+        if (note.changed) note.save.src = "images/saved.png";
+    }, function() {
+        if (note.changed && note.save.src.indexOf("images/loader.gif") == -1) note.save.src = "images/unsaved.png";
+    });
+    $(note).hide();
+    $('#Notes').append(note.save);
+    $('#Notes').append(note);
+    $(note).slideDown('slow');
     return note;
 };
 
@@ -80,7 +100,8 @@ var Notes = {
             },
             success: function () {
                 note.changed = false;
-                printMessage("note_saved");
+                note.save.src = "images/saved.png";
+                note.save.className = "saved";
             },
             error: function () {
                 printMessage("error");
@@ -100,7 +121,8 @@ var Notes = {
                 printMessage("new_note_added");
             },
             error: function () {
-                note.slideUp();
+                $(note.save).slideUp();
+                $(note).slideUp();
                 printMessage("error");
             },
         });
@@ -117,6 +139,7 @@ var Notes = {
                 printMessage("note_deleted");
             },
             error: function () {
+                $(note.save).show();
                 $(note).slideDown();
                 printMessage("error");
             },

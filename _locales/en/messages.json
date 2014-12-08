@@ -36,10 +36,6 @@
         "message": "New note added.",
         "description": "New note added"
     },
-    "note_saved": {
-        "message": "Note saved.",
-        "description": "Note saved"
-    },
     "note_deleted": {
         "message": "Note deleted.",
         "description": "Note deleted"
