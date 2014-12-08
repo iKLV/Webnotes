@@ -29,11 +29,9 @@ You will be asked to provide the adresse of your Owncloud server, username and p
 TODO
 -------
 
-- When there is no connection, Notes are unavailables. They should be stored locally.
 - Order is not defined at all yet.
 - Minimizing.
 - Change the color/category
-
 
 Author
 -------

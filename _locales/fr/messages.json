@@ -24,7 +24,7 @@
         "description": "There is an error"
     },
     "error_connection": {
-        "message": "Erreur de connexion! Veuillez vérifier les <a href='options.html'>paramètres</a>.",
+        "message": "Erreur de connexion!<br>Veuillez vérifier les <a href='options.html'>paramètres</a>.",
         "description": "There is an error of connection"
     },
     "welcome": {
@@ -34,10 +34,6 @@
     "add_new_note": {
         "message": "Ajouter une nouvelle note.",
         "description": "Add a new note"
-    },
-    "new_note_added": {
-        "message": "Nouvelle note ajoutée.",
-        "description": "New note added"
     },
     "note_deleted": {
         "message": "Note supprimée.",

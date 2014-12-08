@@ -42,10 +42,11 @@ body {
 #header {
     position: fixed;
     top: 0;
-    width: 280px;
-    padding:10px;
+	height: 54px;
+    width: 300px;
     background-color: rgb(255,230,100);
     box-shadow:0 4px 10px rgba(0,0,0,.5);
+	z-index:12;
 }
 
 #NewNote {
@@ -53,6 +54,7 @@ body {
     font-size:60px;
     font-weight:bold;
     opacity:0.4;
+	padding: 10px;
 }
 
 #NewNote:hover {
@@ -60,12 +62,11 @@ body {
 }
 
 #Message {
-    vertical-align:30%;
+    vertical-align:60%;
     padding-left:10px;
-    display: none;
+    display: inline-block;
     font-weight: bold;
     font-size: 18px;
-	line-height:18px;
 }
 
 #Loading {
