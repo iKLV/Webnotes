@@ -95,8 +95,8 @@ body {
     font-size: 18px;
 }
 
-#Hiint {
-    height: 50px;
+#Hint, #Info {
+    margin-top: 3px;
 }
 
 a {

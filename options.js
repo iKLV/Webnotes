@@ -42,5 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	$("#labelPassword").html(chrome.i18n.getMessage("label_Password"));
 	$("#Save").val(chrome.i18n.getMessage("save_options"));
 	$("#Clear").val(chrome.i18n.getMessage("clear_options"));
+    $("#Info").html(chrome.i18n.getMessage("info_parameters"));
     $("#Hint").html(chrome.i18n.getMessage("Hint"));
 });

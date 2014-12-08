@@ -3,7 +3,7 @@ var URL = localStorage['URL'];
 function printMessage(message) {
     $("#Message").html(chrome.i18n.getMessage(message));
     $("#Loading").fadeOut('slow');
-    $("#Message").fadeIn('fast')
+    $("#Message").fadeIn('fast');
     if (message != 'error_connection') $("#Message").delay(1000).fadeOut('slow');
 };
 

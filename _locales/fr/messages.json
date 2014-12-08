@@ -15,6 +15,10 @@
         "message": "Les paramètres ont été effacés.",
         "description": "Nettoyage des paramètres"
     },
+    "info_parameters": {
+        "message": "Information:<br>Seule l'adresse de votre serveur est sauvegardée. Une fois que vos identifiants ont été utilisés pour créer le cookie d'accès, vos identifiants ne sont pas stockés.",
+        "description": "Information sur la sécurité des paramètres"
+    },
     "error": {
         "message": "Erreur!",
         "description": "There is an error"
@@ -64,7 +68,7 @@
         "description": "Bouton de nettoyage des options"
     },
     "Hint": {
-        "message": "Astuce: Vous pouvez utiliser shift + n pour ajouter une nouvelle note et shit + s (ou cliquer ailleurs sur l'extension) pour sauvegarder une note. Supprimez une note en effaçant toute la note et sauvegardant.",
+        "message": "Astuce:<br>Vous pouvez utiliser shift + n pour ajouter une nouvelle note et shit + s (ou cliquer ailleurs sur l'extension) pour sauvegarder une note. Supprimez une note en effaçant toute la note et sauvegardant.",
         "description": "Hint message to tell how to use Ownotes"
     }
 }
