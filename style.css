@@ -1,6 +1,6 @@
 body {
     margin:0;
-    padding:55px 0 0 0;
+    padding:40px 0 0 0;
     width:300px;
 }
 
@@ -42,7 +42,7 @@ body {
 #header {
     position: fixed;
     top: 0;
-	height: 54px;
+	height: 40px;
     width: 300px;
     background-color: rgb(255,230,100);
     box-shadow:0 4px 10px rgba(0,0,0,.5);
@@ -54,7 +54,7 @@ body {
     font-size:60px;
     font-weight:bold;
     opacity:0.4;
-	padding: 10px;
+	padding: 5px 0 0 5px;
 }
 
 #NewNote:hover {
@@ -62,19 +62,31 @@ body {
 }
 
 #Message {
-    vertical-align:60%;
-    padding-left:10px;
+    vertical-align:30%;
     display: inline-block;
     font-weight: bold;
     font-size: 18px;
+	line-height: 19px;
+	padding-left: 5px;
 }
 
 #Loading {
     position:absolute;
     top:10px;
-    right:10px;
+    right:8px;
     display: none;
 	opacity:0.4;
+}
+
+#Bigger {
+    position:absolute;
+    top:5px;
+    right:0;
+	opacity:0.5;
+}
+
+#Bigger:hover {
+	opacity:1;
 }
 
 #Title {

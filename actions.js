@@ -208,4 +208,14 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#NewNote").click();
         }
     });
+	
+	//Hover for the bigger button
+	$("#Bigger").hover(function() {
+			console.log($("#Bigger").src);
+			$("#Bigger").attr('src', 'images/Bigger2.png');
+			console.log($("#Bigger").src);
+		},
+        function() {
+			$("#Bigger").attr('src', 'images/Bigger1.png');		
+	});
 });
