@@ -65,17 +65,22 @@ function create1Note(info) {
         }
     });
 	
-    // Change the state of the note if one character is changed and save is shift + s are pressed
+    // Change the state of the note if one character is changed, save if alt + s are pressed, minimize if alt + m are pressed
     $(note).keydown(function(e) {
         var keyList = [9, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 39, 40, 45, 91, 92, 144, 145];
-        if (keyList.indexOf(e.which) == -1) {
+        if (e.altKey && e.which == 83) {
+            e.preventDefault();
+            $(note).blur();
+        } else if (e.altKey && e.which == 77) {
+            e.preventDefault();
+            if (info.minimized)
+                $(note).click();
+            else
+                $(note.minimize).click();
+        } else if (keyList.indexOf(e.which) == -1) {
             note.save.src = "images/unsaved.png";
             note.save.className = "unsaved";
             info.changed = true;
-        }
-        if (e.shiftKey && e.which == 83) {
-            e.preventDefault();
-            $(note).blur();
         }
     });
 	
@@ -92,8 +97,7 @@ function create1Note(info) {
         info.minimized = true;
         info.height = $(note).height();
         $(note).animate({"height": "18px", "padding-top":"5px", "margin-bottom": "-3px"}, 'fast', function() {
-            $(note).css({"overflow":"hidden", "cursor": "pointer", "word-break": "break-all"});
-            note.contentEditable = false;
+            $(note).css({"overflow":"hidden", "cursor": "pointer"});
         });
         var notes = JSON.parse(localStorage['Notes']);
         if (!notes[note.id])
@@ -105,8 +109,7 @@ function create1Note(info) {
         if (info.minimized) {
             $(note).animate({"height": "auto", "padding-top":"15px", "margin-bottom": "0"}, 'fast',
               function() {
-                $(note).css({"overflow":"initial", "cursor": "initial", "word-break": "normal"});
-                note.contentEditable = true;
+                $(note).css({"overflow":"initial", "cursor": "initial"});
             });
             $(note.minimize).fadeIn('slow');
             info.minimized = false;
@@ -277,15 +280,20 @@ document.addEventListener('DOMContentLoaded', function () {
         create1Note(note);
     });
 	
-	// Create a new note if shift + n
-    $('body').keypress(function(e) {
-        if (e.shiftKey && e.which == 78) {
+	// Create a new note if alt + n and a new tab if alt + t
+    $('body').keydown(function(e) {
+        console.log(e.which, e.keyCode, e.altKey);
+        if (e.altKey && e.which == 78) {
             e.preventDefault();
             $("#NewNote").click();
         }
+        if (e.altKey && e.which == 84) {
+            e.preventDefault();
+            $("#Bigger").click();
+        }
     });
 	
-	// Hover for the bigger button
+	// Hover for the new tab button
 	$("#Bigger").hover(function() {
 			$("#Bigger").attr('src', 'images/Bigger2.png');
             $("#Message").html(chrome.i18n.getMessage("open_new_tab"));
