@@ -31,7 +31,10 @@
         "message": "Welcome!",
         "description": "Welcome message"
     },
-
+    "open_new_tab": {
+        "message": "Open in a new tab.",
+        "description": "Open in a new tab"
+    },
     "add_new_note": {
         "message": "Add a new note.",
         "description": "Add a new note"

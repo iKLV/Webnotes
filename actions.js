@@ -1,47 +1,67 @@
 var URL = localStorage['URL'];
+var NOTE= {}
 
 function printMessage(message) {
-    $("#Message").html(chrome.i18n.getMessage(message));
+    $("#Message").html(chrome.i18n.getMessage(message)).fadeIn('fast');
     $("#Loading").fadeOut('slow');
-    $("#Message").fadeIn('fast');
     if (message != 'error_connection') $("#Message").delay(1000).fadeOut('slow');
 };
 
-function create1Note(id, content) {
+function create1Note(info) {
+    // The HTML Div Note
     var note = document.createElement('div');
     note.className = 'Note';
     note.contentEditable = true;
-    note.changed = false;
-    if (id) note.id = id;
-    content = content.split('\n');
-    for (var c=0; c < content.length; c++) $(note).append(content[c]+'<br>');
+    if (!info.changed) info.changed = false;
+    if (!info.minimized) info.minimized = false;
+	if (info.id) note.id = info.id;
+    if (info.content) {
+		content = info.content.split('\n');
+		for (var c=0; c < content.length; c++) $(note).append(content[c]+'<br>');
+	}
+
+    // Save button
     note.save = document.createElement('img');
     note.save.src = "images/saved.png";
     note.save.className = "saved";
     note.save.contentEditable = false;
-	
+
+    // Minimize button
+    note.minimize = document.createElement('img');
+    note.minimize.src = "images/minimize.png";
+    note.minimize.className = "minimize";
+
     // Save, add or delete the note if unselected
     $(note).blur(function() {
-        var cont = this.innerHTML.split('<br>');
+		// Get the content
+        var cont = note.innerHTML.split('<br>');
         var len = cont.length;
         for (var i=1; i<=len; i++) {
             if (cont[len-i] != '') break;
             cont.splice(-1, 1);
         }
-        this.innerHTML = cont.join('<br>');
+        note.innerHTML = cont.join('<br>');
         cont = cont.join('\n');
-        if (cont == "") {
-            $(this).slideUp('slow');
-            $(this.save).slideUp('slow');
-            if (id) {
+		info.content = cont;
+		
+        // Delete
+        if (info.content == "") {
+            $(note).slideUp('slow');
+            $(note.save).fadeOut('slow');
+            $(note.minimize).fadeOut('slow');
+            if (note.id) {
 				$("#Loading").fadeIn("fast");
-				Notes.delete1Note(this);
+				Notes.delete1Note(note);
 			}
-        } else if (note.changed) {
+        // Save of Add
+        } else if (info.changed) {
             note.save.src = "images/loader.gif";
-			this.content = cont;
-			if (!id) Notes.add1Note(this);
-            else Notes.save1Note(this);
+			// Save
+			if (note.id)
+                Notes.save1Note(info, note);
+			// Add
+			else
+                Notes.add1Note(info, note);			
         }
     });
 	
@@ -51,29 +71,68 @@ function create1Note(id, content) {
         if (keyList.indexOf(e.which) == -1) {
             note.save.src = "images/unsaved.png";
             note.save.className = "unsaved";
-            note.changed = true;
+            info.changed = true;
         }
         if (e.shiftKey && e.which == 83) {
             e.preventDefault();
-            $(this).blur();
+            $(note).blur();
         }
     });
 	
-    // Actions of the save button
-    $(note.save).click(function() {
-        if (note.changed) $(note).blur();
-    });
+    // Hover of the save button
     $(note.save).hover(function() {
-        if (note.changed) note.save.src = "images/saved.png";
+        if (info.changed) note.save.src = "images/saved.png";
     }, function() {
-        if (note.changed && note.save.src.indexOf("images/loader.gif") == -1) note.save.src = "images/unsaved.png";
+        if (info.changed && note.save.src.indexOf("images/loader.gif") == -1) note.save.src = "images/unsaved.png";
     });
-	
+
+    // Action of the minimize button
+    $(note.minimize).click(function() {
+        $(note.minimize).fadeOut('fast');
+        info.minimized = true;
+        info.height = $(note).height();
+        $(note).animate({"height": "18px", "padding-top":"5px", "margin-bottom": "-3px"}, 'fast', function() {
+            $(note).css({"overflow":"hidden", "cursor": "pointer", "word-break": "break-all"});
+            note.contentEditable = false;
+        });
+        var notes = JSON.parse(localStorage['Notes']);
+        if (!notes[note.id])
+            notes[note.id] = {};
+        notes[note.id].minimized = true;
+        localStorage['Notes'] = JSON.stringify(notes);
+    });
+    $(note).click(function() {
+        if (info.minimized) {
+            $(note).animate({"height": "auto", "padding-top":"15px", "margin-bottom": "0"}, 'fast',
+              function() {
+                $(note).css({"overflow":"initial", "cursor": "initial", "word-break": "normal"});
+                note.contentEditable = true;
+            });
+            $(note.minimize).fadeIn('slow');
+            info.minimized = false;
+            var notes = JSON.parse(localStorage['Notes']);
+            notes[note.id].minimized = false;
+            localStorage['Notes'] = JSON.stringify(notes);
+        }
+    });
+
     $(note).hide();
-    $('#Notes').append(note.save);
-    $('#Notes').append(note);
+    $('#Notes').append(note.minimize).append(note.save).append(note);
+    $(note.save).fadeIn(1000);
+    // If it is minimized
+    if (info.minimized)
+        $(note.minimize).click();
+    else
+       $(note.minimize).fadeIn(1000);
     $(note).slideDown('slow');
-    return note;
+
+    // If it's a new note
+    if (note.id == 0) {
+        $(note).focus();
+        var press = jQuery.Event("keypress");
+        press.which = 8;
+        $(note).trigger(press);
+    }
 };
 
 var Notes = {
@@ -86,69 +145,86 @@ var Notes = {
                 widthCredentials: true
             },
             success: function (notes) {
-				localStorage['Notes'] = JSON.stringify(notes);
-                for (var n in notes) create1Note(notes[n]['id'],notes[n]['content']);
+                if (!localStorage.Notes || localStorage.Notes == '{}')
+                    var localNotes = {};
+                else
+                    var localNotes = JSON.parse(localStorage.Notes);
+                for (var n in notes) {
+                    var info = notes[n];
+                    if (localNotes[info.id] && localNotes[info.id].minimized)
+                        info.minimized = true;
+                    else
+                        info.minimized = false;
+                    localNotes[info.id] = info;
+                    create1Note(info);
+                }
+                localStorage.Notes = JSON.stringify(localNotes);
 				$("#Message").hide();
 				printMessage("welcome");
             },
             error: function () {
                 $("#NewNote").hide();
                 printMessage("error_connection");
-				var notes = JSON.parse(localStorage['Notes']);
+				var localNotes = JSON.parse(localStorage.Notes);
 				for (var n in notes) {
-					var note = create1Note(notes[n]['id'],notes[n]['content']);
-					note.contentEditable = false;
+                    notes[n].contentEditable = false;
+                    create1Note(note);
 				}
             },
             timeout: 3000,
         });
     },
-	save1Note: function(note) {
+	save1Note: function(info, note) {
 	    $.ajax({
             type: 'PUT',
-            url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes/"+note.id+'?content='+encodeURIComponent(note.content),
+            url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes/"+note.id+'?content='+encodeURIComponent(info.content),
             contentType: 'application/json',
             xhrFields: {
                 widthCredentials: true
             },
-            success: function () {
-				var notes = JSON.parse(localStorage['Notes']);
-				for (var n in notes) if (notes[n]['id'] == note.id) notes[n]['content'] = note.content;
-				localStorage['Notes'] = JSON.stringify(notes);
-                note.changed = false;
-                note.save.src = "images/saved.png";
-                note.save.className = "saved";
+            success: function (savednote) {
+				var localNotes = JSON.parse(localStorage.Notes);
+                savednote.minimized = info.minimized;
+                localNotes[note.id] = savednote;
+				localStorage.Notes = JSON.stringify(localNotes);
+				note.save.src = "images/saved.png";
+				note.save.className = "saved";
+				info.changed = false;
             },
             error: function () {
+				note.save.src = "images/unsaved.png";
                 printMessage("error");
             },
+            timeout: 3000,
         });
 	},
-    add1Note: function(note) {
+    add1Note: function(info, note) {
+        console.log(info);
         $.ajax({
             type: 'POST',
-            url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes?content="+encodeURIComponent(note.content),
+            url: localStorage['URL'] + "/index.php/apps/notes/api/v0.2/notes?content="+encodeURIComponent(info.content),
             contentType: 'application/json',
             xhrFields: {
                 widthCredentials: true
             },
             success: function (newnote) {
-                note.id = newnote['id'];
-				var notes = JSON.parse(localStorage['Notes']);
-				notes.push({'id': note.id, 'content': note.content});
-				localStorage['Notes'] = JSON.stringify(notes);
-                note.changed = false;
-                note.save.src = "images/saved.png";
-                note.save.className = "saved";				
-                //printMessage("new_note_added");
+                var localNotes = JSON.parse(localStorage.Notes);
+                newnote.minimized = info.minimized;
+                localNotes[newnote.id] = newnote;
+                localStorage.Notes = JSON.stringify(localNotes);
+				info.id = newnote.id;
+                note.id = info.id;
+				note.save.src = "images/saved.png";
+				note.save.className = "saved";
+				info.changed = false;
             },
             error: function () {
-                $(note.save).slideUp();
-                $(note).slideUp();
+                note.save.src = "images/unsaved.png";
                 printMessage("error");
             },
+            timeout: 3000,
         });
-    },
+	},
     delete1Note: function(note) {
         $.ajax({
         type: 'DELETE',
@@ -158,16 +234,19 @@ var Notes = {
                 widthCredentials: true
             },
             success: function () {
-				var notes = JSON.parse(localStorage['Notes']);
-				for (var n in notes) if (notes[n]['id'] == note.id) notes.splice(n,1);
-				localStorage['Notes'] = JSON.stringify(notes);
+                var localNotes = JSON.parse(localStorage.Notes);
+                delete localNotes[note.id];
+                localStorage.Notes = JSON.stringify(localNotes);
                 printMessage("note_deleted");
+				return true;
             },
             error: function () {
-                $(note.save).show();
-                $(note).slideDown();
+				$(note.save).fadeIn('fast');
+				$(note.minimize).fadeIn('fast');
+				$(note).slideDown('fast');
                 printMessage("error");
             },
+            timeout: 3000,
         });
     },
 };
@@ -181,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Header
     $('#header').fadeIn('slow');
-    $("#Loading").fadeIn("fast");
+    $("#Loading").fadeIn('slow');
 	
 	// Hover for the New note button
     $("#NewNote").hover(function() {
@@ -194,11 +273,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	
 	// Create a new note if click on the button
     $("#NewNote").click(function() {
-        var note = create1Note(null,'');
-        note.focus();
-		note.save.src = "images/unsaved.png";
-        note.save.className = "unsaved";
-        note.changed = true;
+        var note = {};
+        create1Note(note);
     });
 	
 	// Create a new note if shift + n
@@ -208,4 +284,15 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#NewNote").click();
         }
     });
+	
+	// Hover for the bigger button
+	$("#Bigger").hover(function() {
+			$("#Bigger").attr('src', 'images/Bigger2.png');
+            $("#Message").html(chrome.i18n.getMessage("open_new_tab"));
+            $("#Message").fadeIn("fast");
+		},
+        function() {
+			$("#Bigger").attr('src', 'images/Bigger1.png');		
+            $("#Message").fadeOut("fast");
+	});
 });
