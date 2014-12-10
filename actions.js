@@ -285,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 	
+<<<<<<< HEAD
 	// Hover for the bigger button
 	$("#Bigger").hover(function() {
 			$("#Bigger").attr('src', 'images/Bigger2.png');
@@ -294,5 +295,15 @@ document.addEventListener('DOMContentLoaded', function () {
         function() {
 			$("#Bigger").attr('src', 'images/Bigger1.png');		
             $("#Message").fadeOut("fast");
+=======
+	//Hover for the bigger button
+	$("#Bigger").hover(function() {
+			console.log($("#Bigger").src);
+			$("#Bigger").attr('src', 'images/Bigger2.png');
+			console.log($("#Bigger").src);
+		},
+        function() {
+			$("#Bigger").attr('src', 'images/Bigger1.png');		
+>>>>>>> 4786451ac5548d68a63d599994144ad1e644eba5
 	});
 });

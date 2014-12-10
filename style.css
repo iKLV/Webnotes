@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
     margin:0;
     padding:40px 0 0 0;
@@ -140,3 +141,126 @@ a {
 a:visited {
     color: black;
 }
+=======
+body {
+    margin:0;
+    padding:40px 0 0 0;
+    width:300px;
+}
+
+.Note {
+    position: relative;
+    display: inline-block;
+    margin: -18px 0 0 0;
+    padding: 10px;
+    width: 280px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+.Note:first-line {
+    font-size:18px;
+    font-weight:bold;
+}
+
+#Notes img{
+    position: relative;
+    top: 5px;
+    left: 281px;
+    z-index: 10;
+}
+
+.saved {
+    opacity: 0.4;
+}
+
+.unsaved {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.unsaved:hover {
+    opacity: 1;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+	height: 40px;
+    width: 300px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
+	z-index:12;
+}
+
+#NewNote {
+    cursor: pointer;
+    font-size:60px;
+    font-weight:bold;
+    opacity:0.4;
+	padding: 5px 0 0 5px;
+}
+
+#NewNote:hover {
+    opacity:1;
+}
+
+#Message {
+    vertical-align:30%;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 18px;
+	line-height: 19px;
+	padding-left: 5px;
+}
+
+#Loading {
+    position:absolute;
+    top:10px;
+    right:8px;
+    display: none;
+	opacity:0.4;
+}
+
+#Bigger {
+    position:absolute;
+    top:5px;
+    right:0;
+	opacity:0.5;
+}
+
+#Bigger:hover {
+	opacity:1;
+}
+
+#Title {
+	line-height:10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#OptionForm {
+    width: 280px;
+    background-color: rgb(255,230,100);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
+    font-size: 15px;
+    padding:10px;
+}
+
+#OptionMessage {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#Hint, #Info {
+    margin-top: 3px;
+}
+
+a {
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+>>>>>>> 4786451ac5548d68a63d599994144ad1e644eba5
