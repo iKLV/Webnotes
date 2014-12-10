@@ -30,6 +30,7 @@ TODO
 -------
 
 - Order is not defined at all yet.
+- Minimizing.
 - Change the color/category
 
 Author
