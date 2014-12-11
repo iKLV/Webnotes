@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 widthCredentials: true
             },
             success: function (notes) {
-                $("#OptionMessage").html(chrome.i18n.getMessage("connection_success") + "<a href='popup.html'>Ownotes</a>.");
+                $("#Message").html(chrome.i18n.getMessage("connection_success") + "<a href='popup.html'>Ownotes</a>.");
             },
             error: function () {
-                $("#OptionMessage").html(chrome.i18n.getMessage("connection_fail"));
+                $("#Message").html(chrome.i18n.getMessage("connection_fail"));
             },
             beforeSend: function (xhr) {
                 var auth = btoa(Login + ':' + Password);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		$("#URL").focus();
         $("#Login").val('');
         $("#Password").val('');
-        $("#OptionMessage").html(chrome.i18n.getMessage("clear_parameters"));
+        $("#Message").html(chrome.i18n.getMessage("clear_parameters"));
     });
 	$("#Title").html(chrome.i18n.getMessage("title_option"));
 	$("#labelURL").html(chrome.i18n.getMessage("label_URL"));
