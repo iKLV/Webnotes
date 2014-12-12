@@ -1,7 +1,7 @@
 body {
-    margin:0;
-    padding:45px 0 0 0;
-    width:300px;
+    margin: 0 auto;
+    padding: 45px 0 0 0;
+    width: 300px;
 }
 
 .Note, #Header, #Hint, #Info, #OptionForm{
@@ -13,7 +13,7 @@ body {
 
 .text {
     display: inline-block;
-    padding: 0 10px 10px 10px;
+    padding: 5px 10px 5px 10px;
     width: 280px;
 }
 
@@ -24,44 +24,57 @@ body {
 }
 
 .foot {
+    position: relative;
     padding: 5px;
     width: 290px;
-    height: 18px;
-    background-color: rgb(240,210,80);
+    height: 20px;
 }
 
-
-.saved, .unsaved{
-    height:18px;
-    width:18px;
-    z-index: 10;
-    float:right;
-}
-
-.saved {
+.minimize, .delete, .color, .saved, .unsaved {
+    height: 20px;
+    width: 20px;
     opacity: 0.4;
+    z-index: 10;
+}
+
+.saved, .unsaved {
+    float: right;
+}
+
+.minimize, .delete, .color {
+    float: left;
+    display: none;
+}
+
+.delete, .color {
+    margin-left: 70px;
 }
 
 .unsaved {
-    opacity: 0.7;
-    cursor: pointer;
+    opacity: 0.6;
 }
 
-.minimize {
-    height:18px;
-    width:18px;
-    opacity:0.4;
-    z-index: 10;
-    float:left;
-}
-
-.minimize:hover {
-    opacity:1;
-    cursor: pointer;
-}
-
-.unsaved:hover {
+.minimize:hover, .delete:hover, .color:hover, .unsaved:hover {
     opacity: 1;
+    cursor: pointer;
+}
+
+.colorpanel {
+    display: none;
+    width: 300px;
+    height: 30px;
+    background-color: white;
+}
+
+.colors {
+    position: relative;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    border: solid 1px black;
+    margin: 1px;
+    z-index: 14;
+    cursor: pointer;
 }
 
 #Header {
@@ -100,14 +113,14 @@ body {
     opacity:0.4;
 }
 
-#Bigger {
+#Opentab {
     position:absolute;
     top:5px;
     right:0;
     opacity:0.4;
 }
 
-#Bigger:hover {
+#Opentab:hover {
     opacity:1;
 }
 

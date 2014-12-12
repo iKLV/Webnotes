@@ -7,37 +7,59 @@ function printMessage(message) {
 };
 
 function create1Note(info) {
-    if (!info.changed) info.changed = false;
-    if (!info.minimized) info.minimized = false;
-
     // The HTML Div Note
     var note = document.createElement('div');
     note.className = 'Note';
     if (info.id) note.id = info.id;
 
     // The text inside the Note
-    note.text = document.createElement('div');
+    note.text = document.createElement('p');
     note.text.className = 'text';
 	if (!info.offline) note.text.contentEditable = true;
-    if (info.content) $(note.text).html(info.content.replace('\n', '<br>'));
-
-    // Save button
-    note.save = document.createElement('img');
-    note.save.src = "images/saved.png";
-    note.save.className = "saved";
+    if (info.content) $(note.text).html(info.content.replace(/\n/g, '<br>'));
 
     // Minimize button
     note.minimize = document.createElement('img');
     note.minimize.src = "images/minimize.png";
     note.minimize.className = "minimize";
 
+    // Delete button
+    note.delete = document.createElement('img');
+    note.delete.src = "images/delete.png";
+    note.delete.className = "delete";
+
+    // Color button
+    note.Color = document.createElement('img');
+    note.Color.src = "images/color.png";
+    note.Color.className = "color";
+
+    // Color panel
+    note.Colorpanel = document.createElement('div');
+    note.Colorpanel.className = "colorpanel";
+    var colors = ['<div class="colors" style="background:rgb(255,230,100);"></div>',
+                  '<div class="colors" style="background:rgb(255,180,105);"></div>',
+                  '<div class="colors" style="background:rgb(255,115,75);"></div>',
+                  '<div class="colors" style="background:rgb(255,130,220);"></div>',
+                  '<div class="colors" style="background:rgb(185,90,255);"></div>',
+                  '<div class="colors" style="background:rgb(100,140,255);"></div>',
+                  '<div class="colors" style="background:rgb(100,220,240);"></div>',
+                  '<div class="colors" style="background:rgb(140,255,100);"></div>',
+                  '<div class="colors" style="background:rgb(200,200,200);"></div>',
+                  '<div class="colors" style="background:rgb(255,255,255);"></div>'];
+    $(note.Colorpanel).html(colors.join(''));
+
+    // Save button
+    note.save = document.createElement('img');
+    note.save.src = "images/saved.png";
+    note.save.className = "saved";
+
     // Note foot
     note.foot = document.createElement('div');
     note.foot.className = 'foot';
 
     $(note).hide();
-    $(note.foot).append(note.minimize).append(note.save);
-    $(note).append(note.text).append(note.foot);
+    $(note.foot).append(note.minimize).append(note.delete).append(note.Color).append(note.save);
+    $(note).append(note.text).append(note.foot).append(note.Colorpanel);
     $('#Notes').append(note);
 
     // Save, add or delete the note if unselected
@@ -104,7 +126,7 @@ function create1Note(info) {
     $(note.minimize).click(function() {
         info.minimized = true;
         info.height = $(note).height();
-        $(note).animate({"height": "35px", "margin-bottom": "5px"}, 'fast', function() {
+        $(note).animate({"height": "40px", "margin-bottom": "5px"}, 'fast', function() {
             $(note).css({"overflow":"hidden", "cursor": "pointer"});
         });
         var notes = JSON.parse(localStorage['Notes']);
@@ -124,11 +146,79 @@ function create1Note(info) {
             notes[note.id].minimized = false;
             localStorage['Notes'] = JSON.stringify(notes);
         }
+    })
+
+    // Menu bar appear if note is hovered or note text focused
+    $(note).hover(function() {
+        $(note.minimize).fadeIn('slow');
+        $(note.delete).fadeIn('slow');
+        $(note.Color).fadeIn('slow');
+        $(note.foot).css('background-color', 'rgba(0,0,0,0.1)');
+    }, function() {
+        if (!$(note.text).is(':focus')) {
+            $(note.minimize).fadeOut('slow');
+            $(note.delete).fadeOut('slow');
+            $(note.Color).fadeOut('slow');
+            $(note.foot).css('background-color', 'rgba(0,0,0,0)');
+        }
+    });
+    $(note.text).focus(function() {
+        $(note.minimize).fadeIn('slow');
+        $(note.delete).fadeIn('slow');
+        $(note.Color).fadeIn('slow');
+        $(note.foot).css('background-color', 'rgba(0,0,0,0.1)');
+    });
+    $(note.text).focusout(function() {
+        if (!$(note).is(':hover')) {
+            $(note.minimize).fadeOut('slow');
+            $(note.delete).fadeOut('slow');
+            $(note.Color).fadeOut('slow');
+            $(note.foot).css('background-color', 'rgba(0,0,0,0)');
+        }
+    });
+
+    // If click on color panel
+    $(note.Color).click(function() {
+        $(note.Colorpanel).slideToggle('fast');
+    });
+    $('body').on('click', function(event) {
+        if (!$(event.target).closest(note).length) {
+            $(note.Colorpanel).slideUp('fast');
+        }
+    });
+
+
+    // If click on one color
+    $('.colors').click(function() {
+        var currentnote = $(this).parent().parent();
+        var color = $(this).css('background-color');
+        currentnote.css('background-color', color);
+        info.color = color;
+        $(this).parent().slideUp('fast');
+        var notes = JSON.parse(localStorage['Notes']);
+        var id = currentnote.attr('id');
+        if (!notes[id])
+            notes[id] = {};
+        notes[id].color = color;
+        localStorage['Notes'] = JSON.stringify(notes);
+    });
+
+    // Click on delete
+    $(note.delete).click(function() {
+        $(note).slideUp('slow');
+        if (note.id) {
+            $("#Loading").fadeIn("fast");
+            Notes.delete1Note(note);
+        }
     });
 
     // If it is minimized
     if (info.minimized)
         $(note.minimize).click();
+
+    // If it is from an other color
+    if (info.color)
+        $(note).css('background-color', info.color);
     
     $(note).slideDown('fast', function() {
         // If it is a new note
@@ -161,8 +251,8 @@ var Notes = {
                     var info = notes[n];
                     if (localNotes[info.id] && localNotes[info.id].minimized)
                         info.minimized = true;
-                    else
-                        info.minimized = false;
+                    if (localNotes[info.id] && localNotes[info.id].color)
+                        info.color = localNotes[info.id].color;
                     newLocalNotes[info.id] = info;
                     create1Note(info);
                 }
@@ -193,6 +283,7 @@ var Notes = {
             success: function (savednote) {
 				var localNotes = JSON.parse(localStorage.Notes);
                 savednote.minimized = info.minimized;
+                savednote.color = info.color;
                 localNotes[note.id] = savednote;
 				localStorage.Notes = JSON.stringify(localNotes);
 				note.save.src = "images/saved.png";
@@ -217,6 +308,7 @@ var Notes = {
             success: function (newnote) {
                 var localNotes = JSON.parse(localStorage.Notes);
                 newnote.minimized = info.minimized;
+                newnote.color = info.color;
                 localNotes[newnote.id] = newnote;
                 localStorage.Notes = JSON.stringify(localNotes);
 				info.id = newnote.id;
@@ -263,6 +355,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Request the current notes
     Notes.requestNotes();
 
+    $("#NewNote").attr('alt', chrome.i18n.getMessage("add_new_note"));
+    $("#Header a:first-child").attr('title', chrome.i18n.getMessage("add_new_note"));
+    $("#Opentab").attr('alt', chrome.i18n.getMessage("open_new_tab"));
+    $("#Header a:last-child").attr('title', chrome.i18n.getMessage("open_new_tab"));
+
     // Header
     $('#Header').fadeIn('slow');
     $("#Loading").fadeIn('slow');
@@ -290,18 +387,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (e.altKey && e.which == 84) {
             e.preventDefault();
-            $("#Bigger").click();
+            $("#Opentab").click();
         }
     });
 	
 	// Hover for the new tab button
-	$("#Bigger").hover(function() {
-			$("#Bigger").attr('src', 'images/Bigger2.png');
+	$("#Opentab").hover(function() {
             $("#Message").html(chrome.i18n.getMessage("open_new_tab"));
             $("#Message").fadeIn("fast");
 		},
         function() {
-			$("#Bigger").attr('src', 'images/Bigger1.png');		
             $("#Message").fadeOut("fast");
 	});
 });
